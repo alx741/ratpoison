@@ -330,6 +330,15 @@ find this counter-intuitive, set this variable to @code{0}.
 When called with no arguments, the current setting is returned.
 @end deffn
 
+@deffn Command {set ratfocus} @var{n}
+Enable click-to-focus.  When set to @code{1}, clicking a mouse button
+inside a window will focus the frame containing that window.  The click
+is also passed through to the application.  Default is @code{0}
+(disabled).
+
+When called with no arguments, the current setting is returned.
+@end deffn
+
 @deffn Command {set winname} @var{name}
 There are three resources ratpoison can get a window's name from: the
 WMNAME hint, the res_name from the WMCLASS hint, or the res_class from
@@ -1682,6 +1691,7 @@ Here is a list of variables that can be set:
 @item framemsgwait
 @item startupmessage
 @item warp
+@item ratfocus
 @end itemize
 
 @end deffn

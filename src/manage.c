@@ -153,6 +153,21 @@ grab_keys_all_wins (void)
 }
 
 void
+grab_rat_all_wins (void)
+{
+  rp_window *cur;
+
+  list_for_each_entry (cur, &rp_mapped_window, node)
+    {
+      if (defaults.ratfocus)
+        XGrabButton (dpy, AnyButton, AnyModifier, cur->w, False,
+                     ButtonPressMask, GrabModeSync, GrabModeAsync, None, None);
+      else
+        XUngrabButton (dpy, AnyButton, AnyModifier, cur->w);
+    }
+}
+
+void
 update_normal_hints (rp_window *win)
 {
   long supplied;
@@ -821,6 +836,10 @@ map_window (rp_window *win)
   update_window_information (win);
   win->number = numset_request (rp_window_numset);
   grab_top_level_keys (win->w);
+
+  if (defaults.ratfocus)
+    XGrabButton (dpy, AnyButton, AnyModifier, win->w, False,
+                 ButtonPressMask, GrabModeSync, GrabModeAsync, None, None);
 
   /* Put win in the mapped window list */
   list_del (&win->node);

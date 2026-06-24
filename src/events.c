@@ -427,6 +427,21 @@ handle_key (KeySym ks, unsigned int mod, rp_screen *s)
 }
 
 static void
+button_press (XButtonEvent *ev)
+{
+  rp_window *win;
+
+  win = find_window (ev->window);
+  if (win && win->frame_number != EMPTY)
+    {
+      rp_frame *frame = screen_get_frame (win->scr, win->frame_number);
+      if (frame && (win->scr != rp_current_screen || frame->number != win->scr->current_frame))
+        set_active_frame (frame, 0);
+    }
+  XAllowEvents (dpy, ReplayPointer, ev->time);
+}
+
+static void
 key_press (XEvent *ev)
 {
   rp_screen *s;
@@ -848,6 +863,11 @@ delegate_event (XEvent *ev)
     case MappingNotify:
       PRINT_DEBUG (("--- Handling MappingNotify ---\n"));
       mapping_notify( &ev->xmapping );
+      break;
+
+    case ButtonPress:
+      PRINT_DEBUG (("--- Handling ButtonPress ---\n"));
+      button_press (&ev->xbutton);
       break;
 
     case SelectionRequest:

@@ -181,6 +181,7 @@ static cmdret * set_msgwait(struct cmdarg **args);
 static cmdret * set_framemsgwait(struct cmdarg **args);
 static cmdret * set_startupmessage(struct cmdarg **args);
 static cmdret * set_warp(struct cmdarg **args);
+static cmdret * set_ratfocus(struct cmdarg **args);
 static cmdret * set_rudeness(struct cmdarg **args);
 
 /* command function prototypes. */
@@ -364,6 +365,7 @@ init_set_vars (void)
   add_set_var ("msgwait", set_msgwait, 1, "", arg_NUMBER);
   add_set_var ("padding", set_padding, 4, "", arg_NUMBER, "", arg_NUMBER, "",
                arg_NUMBER, "", arg_NUMBER);
+  add_set_var ("ratfocus", set_ratfocus, 1, "", arg_NUMBER);
   add_set_var ("resizeunit", set_resizeunit, 1, "", arg_NUMBER);
   add_set_var ("rudeness", set_rudeness, 1, "", arg_NUMBER);
   add_set_var ("startupmessage", set_startupmessage, 1, "", arg_NUMBER);
@@ -4972,6 +4974,20 @@ cmd_warp (int interactive UNUSED, struct cmdarg **args)
   else
     return cmdret_new (RET_FAILURE, "warp: invalid argument");
 
+  return cmdret_new (RET_SUCCESS, NULL);
+}
+
+static cmdret *
+set_ratfocus (struct cmdarg **args)
+{
+  if (args[0] == NULL)
+    return cmdret_new (RET_SUCCESS, "%d", defaults.ratfocus);
+
+  if (ARG(0, number) != 0 && ARG(0, number) != 1)
+    return cmdret_new (RET_FAILURE, "set ratfocus: invalid argument");
+
+  defaults.ratfocus = ARG(0, number);
+  grab_rat_all_wins ();
   return cmdret_new (RET_SUCCESS, NULL);
 }
 

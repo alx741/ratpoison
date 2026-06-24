@@ -47,6 +47,7 @@ void grab_top_level_keys (Window w);
 void ungrab_top_level_keys (Window w);
 void ungrab_keys_all_wins (void);
 void grab_keys_all_wins (void);
+void grab_rat_all_wins (void);
 
 void hide_window (rp_window *win);
 void unhide_window (rp_window *win);

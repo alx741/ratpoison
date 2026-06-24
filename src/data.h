@@ -285,6 +285,9 @@ struct rp_defaults
   /* Pointer warping toggle. */
   int warp;
 
+  /* Click-to-focus toggle. */
+  int ratfocus;
+
   int history_size;
   /* remove older history when adding the same again */
   int history_compaction;
