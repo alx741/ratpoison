@@ -5176,6 +5176,11 @@ cmd_tmpwm (int interactive UNUSED, struct cmdarg **args)
   /* Ungrab all our keys. */
   ungrab_keys_all_wins();
 
+  /* Release the ratfocus button grabs. They are synchronous, so they
+     would freeze the pointer while we're not processing events. */
+  list_for_each_entry (win, &rp_mapped_window, node)
+    XUngrabButton (dpy, AnyButton, AnyModifier, win->w);
+
   /* Don't listen for any events from any window. */
   list_for_each_safe_entry (win, iter, tmp, &rp_mapped_window, node)
     {
@@ -5243,6 +5248,7 @@ cmd_tmpwm (int interactive UNUSED, struct cmdarg **args)
      existing windows don't. So grab them on all windows just to be
      sure. */
   grab_keys_all_wins();
+  grab_rat_all_wins();
 
   /* If no window has focus, give the key_window focus. */
   if (current_window())
